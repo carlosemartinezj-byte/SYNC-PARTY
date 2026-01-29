@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SYNC STREAM PARTY - Elite Edition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ocean-black: #011b22;
+            --ocean-deep: #015871;
+            --ocean-light: #B7E8EB;
+            --text-light: #e0f7f9;
+        }
+
+        body { 
+            background: radial-gradient(ellipse at center, #013a4a 0%, #011b22 100%);
+            color: var(--text-light);
+            font-family: 'Montserrat', sans-serif;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* --- FONDO OCEAN WAVE --- */
+        .ocean { 
+            height: 5%;
+            width: 100%;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            background: #002b36;
+            z-index: 1;
+        }
+
+        .wave {
+            background: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/85486/wave.svg) repeat-x; 
+            position: absolute;
+            top: -198px;
+            width: 6400px;
+            height: 198px;
+            animation: wave 7s cubic-bezier( 0.36, 0.45, 0.63, 0.53) infinite;
+            transform: translate3d(0, 0, 0);
+            filter: brightness(0.4) hue-rotate(10deg);
+        }
+
+        .wave:nth-of-type(2) {
+            top: -175px;
+            animation: wave 7s cubic-bezier( 0.36, 0.45, 0.63, 0.53) -.125s infinite, swell 7s ease -1.25s infinite;
+            opacity: 0.8;
+        }
+
+        @keyframes wave {
+            0% { margin-left: 0; }
+            100% { margin-left: -1600px; }
+        }
+
+        @keyframes swell {
+            0%, 100% { transform: translate3d(0,-25px,0); }
+            50% { transform: translate3d(0,5px,0); }
+        }
+
+        /* --- UI LANDING --- */
+        .content-overlay {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            pointer-events: none;
+        }
+
+        .logo-hero {
+            height: 220px;
+            filter: drop-shadow(0 0 40px rgba(183, 232, 235, 0.4));
+            margin-bottom: 2.5rem;
+            animation: float 6s infinite ease-in-out;
+            pointer-events: auto;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .main-card {
+            background: rgba(1, 27, 34, 0.35); /* Fondo más transparente */
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(183, 232, 235, 0.15);
+            border-radius: 3.5rem;
+            padding: 4rem 3rem;
+            box-shadow: 0 50px 120px rgba(0, 0, 0, 0.6);
+            max-width: 520px;
+            width: 90%;
+            text-align: center;
+            pointer-events: auto;
+        }
+
+        .bookmarklet-btn {
+            background: linear-gradient(135deg, rgba(1, 88, 113, 0.45) 0%, rgba(2, 122, 156, 0.45) 100%);
+            color: #fff;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            padding: 1.5rem 2.5rem;
+            border-radius: 1.8rem;
+            font-size: 1.3rem;
+            font-weight: 900;
+            display: inline-flex;
+            width: 100%;
+            justify-content: center;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-decoration: none;
+            border: 1px solid rgba(183, 232, 235, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .bookmarklet-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 50px rgba(183, 232, 235, 0.4);
+            filter: brightness(1.2);
+        }
+
+        .info-tag {
+            font-size: 10px;
+            color: var(--ocean-light);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 2rem;
+            font-weight: 800;
+            opacity: 0.7;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ocean">
+        <div class="wave"></div>
+        <div class="wave"></div>
+    </div>
+
+    <div class="content-overlay">
+        <img src="https://i.postimg.cc/fycJDtkn/SYNC-PARTY-(4).png" alt="Sync Party" class="logo-hero">
+
+        <div class="main-card">
+            <h2 class="text-[13px] uppercase tracking-[0.6em] text-[#B7E8EB] mb-8 font-black">
+                SYNC PARTY PROTOCOL V17.2
+            </h2>
+            
+            <a id="bookmarklet" href="#" title="SYNC PARTY" class="bookmarklet-btn">
+                ABRIR SYNC PARTY
+            </a>
+
+            <div class="info-tag">
+                Series y Películas Juntos<br>
+                Compatible con Amazon Prime, Disney+, Netflix y Paramount+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /**
+         * SCRIPT DEL PROTOCOLO (BOOKMARKLET)
+         */
+        const scriptCode = `(function() {
+            if (window.SYNC_MATRIX_PARTY) return;
+            window.SYNC_MATRIX_PARTY = true;
+
+            const loadScript = (s) => new Promise(r => { 
+                if(window.Peer) return r(); 
+                let sc=document.createElement('script'); 
+                sc.src=s; sc.onload=r; 
+                document.head.appendChild(sc); 
+            });
+
+            async function init() {
+                const root = document.createElement('div');
+                const shadow = root.attachShadow({mode: 'open'});
+                document.body.appendChild(root);
+
+                shadow.innerHTML = \`
+                <style>
+                    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@800;900&display=swap');
+                    :host { 
+                        --deep: #011b22; 
+                        --mid: #015871;
+                        --aqua: #B7E8EB; 
+                        --glass: rgba(1, 27, 34, 0.45); /* ULTRA TRANSPARENTE */
+                    }
+                    
+                    .app-wrap {
+                        position: fixed; bottom: 30px; right: 30px; width: 340px;
+                        background: var(--glass); border: 1.5px solid rgba(183, 232, 235, 0.2);
+                        border-radius: 35px; color: #fff; z-index: 2147483647;
+                        font-family: 'Montserrat', sans-serif; 
+                        box-shadow: 0 40px 100px rgba(0,0,0,0.5);
+                        overflow: hidden; backdrop-filter: blur(30px);
+                        transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+                    }
+
+                    /* ICONO MINIMIZADO ESTÉTICO */
+                    .app-wrap.minimized { 
+                        width: 60px; height: 60px; border-radius: 50%; 
+                        border: 2px solid var(--aqua); background: rgba(1, 27, 34, 0.7);
+                        box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+                        cursor: move; display: flex; align-items: center; justify-content: center;
+                        padding: 12px; box-sizing: border-box;
+                    }
+
+                    .trigger {
+                        position: absolute; top: 18px; right: 20px; width: 35px; height: 35px;
+                        cursor: pointer; z-index: 100; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 4px;
+                    }
+                    .b { width: 22px; height: 3px; background: var(--aqua); border-radius: 4px; transition: 0.4s; }
+                    .app-wrap:not(.minimized) .b:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+                    .app-wrap:not(.minimized) .b:nth-child(2) { opacity: 0; }
+                    .app-wrap:not(.minimized) .b:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+                    .badges { display: flex; gap: 8px; padding: 10px 20px 0 20px; margin-top: 10px; }
+                    .badge {
+                        flex: 1; padding: 6px; border-radius: 12px; font-size: 8px; font-weight: 900;
+                        text-align: center; text-transform: uppercase; background: rgba(0,0,0,0.25);
+                        color: rgba(183, 232, 235, 0.4); border: 1px solid transparent;
+                    }
+                    .badge.ok { 
+                        color: var(--aqua); border-color: rgba(183, 232, 235, 0.2);
+                        background: rgba(183, 232, 235, 0.1); text-shadow: 0 0 10px rgba(183, 232, 235, 0.3);
+                    }
+
+                    .header { 
+                        padding: 30px 25px; display: flex; flex-direction: column; align-items: center; 
+                        background: rgba(255,255,255,0.02); cursor: move; border-bottom: 1px solid rgba(183, 232, 235, 0.1);
+                    }
+                    .logo-mini { width: 160px; filter: drop-shadow(0 0 15px rgba(183, 232, 235, 0.3)); }
+
+                    .body { padding: 25px; }
+                    label { font-size: 8px; color: var(--aqua); text-transform: uppercase; letter-spacing: 2px; display: block; margin-bottom: 6px; font-weight: 900; opacity: 0.7; }
+                    input { 
+                        width: 100%; background: rgba(0,0,0,0.25); border: 1.5px solid rgba(183, 232, 235, 0.15); 
+                        color: #fff; padding: 14px; border-radius: 15px; font-size: 11px; 
+                        margin-bottom: 14px; outline: none; transition: 0.3s;
+                    }
+                    input:focus { border-color: var(--aqua); background: rgba(0,0,0,0.35); }
+                    
+                    .btn { 
+                        width: 100%; border: none; padding: 16px; border-radius: 18px; font-weight: 900; cursor: pointer; 
+                        text-transform: uppercase; font-size: 10px; letter-spacing: 1.5px; transition: 0.3s; margin-bottom: 10px;
+                    }
+                    .btn-main { background: rgba(1, 88, 113, 0.7); color: #fff; border: 1px solid var(--aqua); box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2); }
+                    .btn-share { background: transparent; color: var(--aqua); border: 1.5px solid rgba(183, 232, 235, 0.25); }
+                    .btn:hover { transform: translateY(-3px); filter: brightness(1.25); }
+
+                    .chat-box { 
+                        height: 140px; overflow-y: auto; background: rgba(0,0,0,0.2); 
+                        border-radius: 20px; padding: 15px; font-size: 11px; margin-bottom: 12px; 
+                        border: 1.5px solid rgba(183, 232, 235, 0.1); scrollbar-width: none; 
+                    }
+                    .msg { margin-bottom: 10px; border-left: 3px solid var(--aqua); padding-left: 12px; background: rgba(255,255,255,0.03); padding-top: 5px; padding-bottom: 5px; border-radius: 0 8px 8px 0; }
+                    .msg strong { display: block; color: var(--aqua); font-size: 7px; margin-bottom: 3px; }
+
+                    .latency { font-size: 8px; color: var(--aqua); opacity: 0.5; text-align: right; margin-top: 6px; }
+
+                    .logo-min { width: 100%; height: 100%; display: none; align-items: center; justify-content: center; }
+                    .logo-min img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 0 10px var(--aqua)); }
+                    
+                    .app-wrap.minimized .logo-min { display: flex; }
+                    .app-wrap.minimized .header, .app-wrap.minimized .body, .app-wrap.minimized .badges, .app-wrap.minimized .trigger { display: none; }
+                </style>
+
+                <div class="app-wrap" id="app">
+                    <div class="trigger" id="btn-toggle"><div class="b"></div><div class="b"></div><div class="b"></div></div>
+                    
+                    <div class="header" id="drag-handle"><img src="https://i.postimg.cc/fycJDtkn/SYNC-PARTY-(4).png" class="logo-mini"></div>
+                    
+                    <div class="badges">
+                        <div id="badge-vid" class="badge">SISTEMA OK</div>
+                        <div id="badge-net" class="badge">DESCONECTADO</div>
+                    </div>
+
+                    <div class="body">
+                        <div id="view-setup">
+                            <label>Nombre de Usuario</label><input id="my-name" type="text" value="\${localStorage.getItem('psync_name') || 'Usuario'}">
+                            <label>Tu ID de Invitación</label><input id="my-id" type="text" readonly style="cursor:pointer; text-align:center; color:var(--aqua);">
+                            <label>ID de Enlace</label><input id="partner-id" type="text" placeholder="Pegar ID aquí..." value="\${localStorage.getItem('psync_last_partner') || ''}">
+                            <button id="btn-connect" class="btn btn-main">CONECTAR</button>
+                            <button id="btn-share" class="btn btn-share">COMPARTIR INVITACIÓN</button>
+                        </div>
+
+                        <div id="view-active" style="display:none">
+                            <div id="chat" class="chat-box"></div>
+                            <input id="chat-input" type="text" placeholder="Escribe un mensaje...">
+                            <div id="ping-info" class="latency">LATENCIA: -- MS</div>
+                        </div>
+                    </div>
+
+                    <div class="logo-min" id="btn-maximize"><img src="https://i.postimg.cc/vB7t2mF5/icono-party.png"></div>
+                </div>\`;
+
+                const $ = (id) => shadow.getElementById(id);
+                const app = $('app');
+                const t = (e) => { e.stopPropagation(); app.classList.toggle('minimized'); };
+                $('btn-toggle').onclick = t; 
+                $('btn-maximize').onclick = t;
+
+                const urlParams = new URLSearchParams(window.location.search);
+                if(urlParams.get('psync')) $('partner-id').value = urlParams.get('psync');
+
+                let dragging = false, off = [0,0];
+                const onDown = (e) => { 
+                    dragging = true; 
+                    off = [app.offsetLeft - e.clientX, app.offsetTop - e.clientY]; 
+                    e.preventDefault(); 
+                };
+                $('drag-handle').onmousedown = onDown;
+                $('btn-maximize').onmousedown = onDown;
+                
+                window.addEventListener('mouseup', () => dragging = false);
+                window.addEventListener('mousemove', (e) => { if(dragging) { 
+                    app.style.left = (e.clientX + off[0]) + 'px'; 
+                    app.style.top = (e.clientY + off[1]) + 'px'; 
+                    app.style.bottom = 'auto'; app.style.right = 'auto'; 
+                }});
+
+                await loadScript('https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js');
+                let peer = new Peer(), conn, video, isRemote = false, lastPing = Date.now();
+
+                const addMsg = (n, m) => {
+                    let d = document.createElement('div'); d.className='msg';
+                    d.innerHTML = \`<strong>\${n}</strong>\${m}\`;
+                    $('chat').appendChild(d); $('chat').scrollTop = $('chat').scrollHeight;
+                }
+
+                const handleConn = (c) => {
+                    conn = c;
+                    conn.on('open', () => {
+                        localStorage.setItem('psync_last_partner', conn.peer);
+                        $('view-setup').style.display = 'none'; $('view-active').style.display = 'block';
+                        $('badge-net').innerText = 'CONECTADO'; $('badge-net').classList.add('ok');
+                        setInterval(() => { if(conn.open) { lastPing = Date.now(); conn.send({t:'PING'}); } }, 3000);
+                    });
+                    conn.on('data', d => {
+                        if(d.t==='PING') return conn.send({t:'PONG'});
+                        if(d.t==='PONG') return $('ping-info').innerText = \`LATENCIA: \${Date.now()-lastPing} MS\`;
+                        if(d.t==='MSG') return addMsg(d.n, d.m);
+                        isRemote = true;
+                        if(d.t==='P') video?.play();
+                        if(d.t==='S') { video?.pause(); if(video) video.currentTime = d.time; }
+                        if(d.t==='K') if(video) video.currentTime = d.time;
+                        setTimeout(() => isRemote = false, 500);
+                    });
+                };
+
+                peer.on('open', id => { $('my-id').value = id; });
+                peer.on('connection', handleConn);
+
+                $('btn-connect').onclick = () => {
+                    let pid = $('partner-id').value.trim();
+                    if(pid) handleConn(peer.connect(pid));
+                };
+
+                $('btn-share').onclick = () => {
+                    const url = new URL(window.location.href);
+                    url.searchParams.set('psync', $('my-id').value);
+                    navigator.clipboard.writeText(url.href);
+                    let old = $('btn-share').innerText; $('btn-share').innerText = 'ENLACE COPIADO';
+                    setTimeout(() => $('btn-share').innerText = old, 2000);
+                };
+
+                $('my-id').onclick = () => {
+                    navigator.clipboard.writeText($('my-id').value);
+                    let v = $('my-id').value; $('my-id').value = 'COPIADO';
+                    setTimeout(() => $('my-id').value = v, 1500);
+                };
+
+                // SOLUCIÓN DEFINITIVA BUG TECLAS (SPACE/PAUSE/ETC)
+                const chatInput = $('chat-input');
+                const preventKeys = (e) => {
+                    e.stopPropagation();
+                    e.stopImmediatePropagation();
+                };
+                chatInput.onkeydown = (e) => {
+                    preventKeys(e);
+                    if(e.key==='Enter' && chatInput.value) {
+                        let m = chatInput.value, n = $('my-name').value;
+                        conn?.send({t:'MSG', m, n}); addMsg('YO', m);
+                        chatInput.value = '';
+                    }
+                };
+                chatInput.onkeyup = preventKeys;
+                chatInput.onkeypress = preventKeys;
+
+                setInterval(() => {
+                    let v = Array.from(document.querySelectorAll('video')).find(x => x.duration > 30) || document.querySelector('video');
+                    if(v && v !== video) {
+                        video = v; $('badge-vid').innerText = 'SISTEMA OK'; $('badge-vid').classList.add('ok');
+                        v.addEventListener('play', () => { if(!isRemote && conn) conn.send({t:'P'}); });
+                        v.addEventListener('pause', () => { if(!isRemote && conn) conn.send({t:'S', time: v.currentTime}); });
+                        v.addEventListener('seeking', () => { if(!isRemote && conn) conn.send({t:'K', time: v.currentTime}); });
+                    }
+                }, 3000);
+            }
+            init();
+        })();`;
+
+        document.getElementById('bookmarklet').href = "javascript:" + encodeURIComponent(scriptCode);
+    </script>
+</body>
+</html>
